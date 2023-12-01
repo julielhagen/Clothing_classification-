@@ -45,10 +45,10 @@ class LDA():
         eigenvectors = eigenvectors.T
 
         # Get indexes of maximum eigenvalues
-        idx = np.argsort(abs(eigenvalues))[::-1]
+        idx = np.argsort(eigenvalues.real)[::-1]
 
         # Get sorted eigenvalues and eigenvectors
-        eigenvalues, eigenvectors = eigenvalues[idx], eigenvectors[idx]
+        eigenvalues, eigenvectors = eigenvalues[idx], eigenvectors[idx].real
 
         # Save the n first eigenvectors
         self.linear_discriminants = eigenvectors[0:self.n_components]
