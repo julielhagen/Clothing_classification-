@@ -20,24 +20,27 @@ class LDA():
         SB = np.zeros((n_features, n_features))
 
         for c in class_labels:
-            # Find within class scatter matrix
+            # Find within class scatter matrix S_W:
             X_c = X[y==c]
-            mean_c = np.mean(X_c, axis=0)
+            #Find mean for ach class
+            m_i = np.mean(X_c, axis=0)
 
-            # Sum of SW_c
-            SW += (X_c -mean_c).T.dot((X_c-mean_c))
+            # Sum of SW_c using formula for SW
+            SW += (X_c -m_i).T.dot((X_c-m_i))
 
             # Find between class scatter matrix
             n_c = X_c.shape[0]
-            mean_diff = (mean_c - means).reshape(n_features,1)
+            mean_diff = (m_i - means).reshape(n_features,1)
 
             # Sum of SB
             SB += n_c * (mean_diff).dot(mean_diff.T)
 
-        # Find the inverse of SW
+        #Find the eigenvector for S_W^-1SW:
+                   
+        # calculate the inverse of SW
         SW_inv = inv(SW)
 
-        # Find SW^-1SB
+        # Calculate SW^-1SB
         A = SW_inv.dot(SB)
 
         # Find the eigenvectors and eigenvalues of A
@@ -55,3 +58,7 @@ class LDA():
     
     def transform(self, X):
         return np.dot(X, self.linear_discriminants.T)
+    
+
+
+
